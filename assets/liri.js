@@ -1,27 +1,23 @@
+//access key info through var spotify//
 require("dotenv").config();
-
 var keys = require("./assets/keys.js");
+var spotify = new Spotify(keys.spotify);
 
 // load the fs package to read and write//
 var fs = require("fs");
 
-// Include the axios npm package (Don't forget to run "npm install axios" in this folder first!)
+// Include the axios npm package run "npm install axios" //
 var axios = require("axios");
-
-//access key info through var spotify//
-var spotify = new Spotify(keys.spotify);
-
 
 // get action and name from command line user input//
 var action = process.argv[2];
 var name = process.argv[3];
 
-
 // The switch-case will direct which function gets run from command line input//
 
 switch (action) {
     case "spotify-this-song":
-        spotify(name);
+        spotifyit(name);
         break;
 
     case "concert-this":
@@ -40,7 +36,7 @@ function movie() {
 
 
     var link = "http://www.omdbapi.com/?t=" + name + "&y=&plot=short&apikey=trilogy";
-    
+
     // default name of movie is Mr. Nobody//
 
     // Then run a request with axios to the OMDB API with the movie specified
@@ -86,12 +82,17 @@ function concert() {
     // Then run a request with axios to the bands in town API with the band specified
     axios.get(link).then(
         function (response) {
-            console.log(response.upcoming_event_count)
-            var counter= parseInt(response.upcoming_event_count);
-            console.log("Name of venue:" + response);
-            console.log("Venue location: " + response);
-            console.log("Date of Event: " + response);
 
+            console.log(response.upcoming_event_count)
+            var counter = parseInt(response.upcoming_event_count);
+            
+            // for loop to loop through all the events and display info for each event//
+
+            for (var i in response.data) {
+                console.log("Name of venue:" + response.data[i].venue);
+                console.log("Venue location: " + response.data[i].city);
+                console.log("Date of Event: " + moment(response.data[i].datetime).format(MM/DD/YYYY)
+            }
         })
 
         .catch(function (error) {
@@ -116,11 +117,11 @@ function concert() {
         })
 }
 
-function spotify() {
+function spotifyit() {
 
     var link = "https://www.npmjs.com/package/node-spotify-api"
 
-   //default song name is The Sign from Ace of Base//
+    //default song name is The Sign from Ace of Base//
 
     // Then run a request with axios to the Spotify API with the song specified
     axios.get(link).then(
@@ -129,7 +130,7 @@ function spotify() {
             console.log("The Song Name is : " + response);
             console.log("Preview link URL " + response);
             console.log("The Album that the song is from is : " + response);
-            
+
 
         })
 
@@ -172,7 +173,7 @@ function dowhat() {
 
         switch (action) {
             case "spotify-this-song":
-                spotify(name);
+                spotifyit(name);
                 break;
 
             case "concert-this":
