@@ -1,4 +1,4 @@
-// require("dotenv").config();
+require("dotenv").config();
 
 var keys = require("./assets/keys.js");
 
@@ -7,6 +7,10 @@ var fs = require("fs");
 
 // Include the axios npm package (Don't forget to run "npm install axios" in this folder first!)
 var axios = require("axios");
+
+//access key info through var spotify//
+var spotify = new Spotify(keys.spotify);
+
 
 // get action and name from command line user input//
 var action = process.argv[2];
@@ -17,27 +21,27 @@ var name = process.argv[3];
 
 switch (action) {
     case "spotify-this-song":
-        spotify();
+        spotify(name);
         break;
 
     case "concert-this":
-        concert();
+        concert(name);
         break;
 
     case "movie-this":
-        movie();
+        movie(name);
         break;
 
     case "do-what-it-says":
-        dowhat();
+        dowhat(name);
         break;
 }
 function movie() {
 
 
     var link = "http://www.omdbapi.com/?t=" + name + "&y=&plot=short&apikey=trilogy";
-    // if( name="")
-    // name = "Mr. Nobody";
+    
+    // default name of movie is Mr. Nobody//
 
     // Then run a request with axios to the OMDB API with the movie specified
     axios.get(link).then(
@@ -79,9 +83,11 @@ function concert() {
     var link = "https://rest.bandsintown.com/artists/" + name + "/events?app_id=codingbootcamp";
 
 
-    // Then run a request with axios to the OMDB API with the movie specified
+    // Then run a request with axios to the bands in town API with the band specified
     axios.get(link).then(
         function (response) {
+            console.log(response.upcoming_event_count)
+            var counter= parseInt(response.upcoming_event_count);
             console.log("Name of venue:" + response);
             console.log("Venue location: " + response);
             console.log("Date of Event: " + response);
@@ -110,6 +116,44 @@ function concert() {
         })
 }
 
+function spotify() {
+
+    var link = "https://www.npmjs.com/package/node-spotify-api"
+
+   //default song name is The Sign from Ace of Base//
+
+    // Then run a request with axios to the Spotify API with the song specified
+    axios.get(link).then(
+        function (response) {
+            console.log("The Artist is: " + response);
+            console.log("The Song Name is : " + response);
+            console.log("Preview link URL " + response);
+            console.log("The Album that the song is from is : " + response);
+            
+
+        })
+
+        .catch(function (error) {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log("---------------Data---------------");
+                console.log(error.response.data);
+                console.log("---------------Status---------------");
+                console.log(error.response.status);
+                console.log("---------------Status---------------");
+                console.log(error.response.headers);
+            } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an object that comes back with details pertaining to the error that occurred.
+                console.log(error.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log("Error", error.message);
+            }
+            console.log(error.config);
+        })
+}
 function dowhat() {
 
     // We will read the existing random text file file
@@ -139,5 +183,5 @@ function dowhat() {
                 movie(name);
                 break;
         }
-    }
-    )}
+    })
+}
