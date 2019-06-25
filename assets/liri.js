@@ -8,7 +8,8 @@ var keys = require("./keys.js");
 var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
 
-// src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"
+//load moment package//
+var moment = require('moment'); 
 
 // load the fs package to read and write//
 var fs = require("fs");
