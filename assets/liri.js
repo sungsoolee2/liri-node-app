@@ -138,7 +138,6 @@ function concert() {
 
 function spotifyit() {
 
-
     // default song name is The Sign from Ace of Base//
 
     if (name == null) {
@@ -150,46 +149,20 @@ function spotifyit() {
     logaction();
     logname();
 
-    spotify.search({ type: 'track', query: 'The Sign' }, function (err, data) {
+    // Then run a request with spotify to the Spotify API with the song specified
+    spotify.search({ type: 'track', query: name }, function (err, data) {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
 
-        console.log(data);
+        console.log("The Artist is: " + data.tracks.items[0].artists[0].name);
+        console.log("The Song Name is : " + data.tracks.items[0].name);
+        console.log("Preview link URL " + data.tracks.items[0].preview_url);
+        console.log("The Album that the song is from is : " + data.tracks.items[0].album.name);
+
     });
-    // Then run a request with spotify to the Spotify API with the song specified
-    // spotify.search({ type: "track", query: name }).then(function (response) {
-    //     console.log("The Artist is: " + response.tracks.next);
-    //     console.log("The Artist is: " + response.tracks.href);
-    //     console.log("The Artist is: " + response.tracks);
-    //     console.log("The Song Name is : " + response.tracks.items);
-    //     console.log("Preview link URL " + response.tracks);
-    //     console.log("The Album that the song is from is : " + response);
-
-
-    // })
-
-    //         .catch(function (error) {
-    //             if (error.response) {
-    //                 // The request was made and the server responded with a status code
-    //                 // that falls out of the range of 2xx
-    //                 console.log("---------------Data---------------");
-    //                 console.log(error.response.data);
-    //                 console.log("---------------Status---------------");
-    //                 console.log(error.response.status);
-    //                 console.log("---------------Status---------------");
-    //                 console.log(error.response.headers);
-    //             } else if (error.request) {
-    //                 // The request was made but no response was received
-    //                 // `error.request` is an object that comes back with details pertaining to the error that occurred.
-    //                 console.log(error.request);
-    //             } else {
-    //                 // Something happened in setting up the request that triggered an Error
-    //                 console.log("Error", error.message);
-    //             }
-    //             console.log(error.config);
-    //         })
 }
+
 function dowhat() {
 
     //loging command run to log.txt file//
@@ -241,7 +214,7 @@ function logaction() {
 }
 
 function logname() {
-    fs.appendFile("log.txt", name + " ", function (err) {
+    fs.appendFile("log.txt", name +"\n", function (err) {
 
         // If an error was experienced we will log it.
         if (err) {
