@@ -41,9 +41,13 @@ switch (action) {
 }
 function movie() {
     // default name of movie is Mr. Nobody//
-    if (name == "undefined") { name = "Mr. Nobody" }
+    if (name == null) { name = "Mr. Nobody" }
+    // console.log(name);
 
-    console.log(name);
+    //loging command run to log.txt file//
+    logaction();
+    logname();
+
     var link = "http://www.omdbapi.com/?t=" + name + "&y=&plot=short&apikey=trilogy";
 
 
@@ -88,6 +92,9 @@ function movie() {
 function concert() {
     var link = "https://rest.bandsintown.com/artists/" + name + "/events?app_id=codingbootcamp";
 
+    //loging command run to log.txt file//
+    logaction();
+    logname();
 
     // Then run a request with axios to the bands in town API with the band specified
     axios.get(link).then(
@@ -96,9 +103,9 @@ function concert() {
             // for loop to loop through all the events and display info for each event//
             // console.log(response.data);
             for (var i in response.data) {
-                var namevenue= response.data[i].venue.name;
-                var locvenue= response.data[i].venue.city;
-                var dateevent= moment(response.data[i].datetime).format('LLL');
+                var namevenue = response.data[i].venue.name;
+                var locvenue = response.data[i].venue.city;
+                var dateevent = moment(response.data[i].datetime).format('LLL');
                 console.log("Name of venue: " + namevenue + "  Venue location:  " + locvenue + "  Date of event:  " + dateevent)
                 // console.log("Name of venue:" + response.data[i].venue.name);
                 // console.log("Venue location: " + response.data[i].venue.city);
@@ -132,48 +139,62 @@ function concert() {
 function spotifyit() {
 
 
-// default song name is The Sign from Ace of Base//
-// spotify.search({ type: 'track', query: 'All the Small Things' }, function(err, data) {
-//     if (err) {
-//       return console.log('Error occurred: ' + err);
-//     }
+    // default song name is The Sign from Ace of Base//
 
-//   console.log(data); 
-//   });
-// Then run a request with spotify to the Spotify API with the song specified
-spotify.search({ type: "track", query: name }).then(function (response) {
-    console.log("The Artist is: " + response.tracks.next);
-    console.log("The Artist is: " + response.tracks.href);
-    console.log("The Artist is: " + response.tracks);
-    console.log("The Song Name is : " + response.tracks.items);
-    console.log("Preview link URL " + response.tracks);
-    console.log("The Album that the song is from is : " + response);
+    if (name == null) {
+        name = "The Sign"
+    }
+    console.log(name);
+
+    //loging command run to log.txt file//
+    logaction();
+    logname();
+
+    spotify.search({ type: 'track', query: 'The Sign' }, function (err, data) {
+        if (err) {
+            return console.log('Error occurred: ' + err);
+        }
+
+        console.log(data);
+    });
+    // Then run a request with spotify to the Spotify API with the song specified
+    // spotify.search({ type: "track", query: name }).then(function (response) {
+    //     console.log("The Artist is: " + response.tracks.next);
+    //     console.log("The Artist is: " + response.tracks.href);
+    //     console.log("The Artist is: " + response.tracks);
+    //     console.log("The Song Name is : " + response.tracks.items);
+    //     console.log("Preview link URL " + response.tracks);
+    //     console.log("The Album that the song is from is : " + response);
 
 
-})
+    // })
 
-        .catch(function (error) {
-            if (error.response) {
-                // The request was made and the server responded with a status code
-                // that falls out of the range of 2xx
-                console.log("---------------Data---------------");
-                console.log(error.response.data);
-                console.log("---------------Status---------------");
-                console.log(error.response.status);
-                console.log("---------------Status---------------");
-                console.log(error.response.headers);
-            } else if (error.request) {
-                // The request was made but no response was received
-                // `error.request` is an object that comes back with details pertaining to the error that occurred.
-                console.log(error.request);
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log("Error", error.message);
-            }
-            console.log(error.config);
-        })
+    //         .catch(function (error) {
+    //             if (error.response) {
+    //                 // The request was made and the server responded with a status code
+    //                 // that falls out of the range of 2xx
+    //                 console.log("---------------Data---------------");
+    //                 console.log(error.response.data);
+    //                 console.log("---------------Status---------------");
+    //                 console.log(error.response.status);
+    //                 console.log("---------------Status---------------");
+    //                 console.log(error.response.headers);
+    //             } else if (error.request) {
+    //                 // The request was made but no response was received
+    //                 // `error.request` is an object that comes back with details pertaining to the error that occurred.
+    //                 console.log(error.request);
+    //             } else {
+    //                 // Something happened in setting up the request that triggered an Error
+    //                 console.log("Error", error.message);
+    //             }
+    //             console.log(error.config);
+    //         })
 }
 function dowhat() {
+
+    //loging command run to log.txt file//
+    logaction();
+    logname();
 
     // We will read the existing random text file file
     fs.readFile("random.txt", "utf8", function (err, data) {
@@ -190,7 +211,7 @@ function dowhat() {
         name = output[1];
         // console.log(action);
         // console.log(name);
-       
+
         switch (action) {
             case "spotify-this-song":
                 spotifyit(name);
@@ -204,5 +225,29 @@ function dowhat() {
                 movie(name);
                 break;
         }
+    })
+}
+
+function logaction() {
+    fs.appendFile("log.txt", action + " ", function (err) {
+
+        // If an error was experienced we will log it.
+        if (err) {
+            console.log(err);
+        }
+
+
+    })
+}
+
+function logname() {
+    fs.appendFile("log.txt", name + " ", function (err) {
+
+        // If an error was experienced we will log it.
+        if (err) {
+            console.log(err);
+        }
+
+
     })
 }
