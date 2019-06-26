@@ -9,7 +9,7 @@ var Spotify = require('node-spotify-api');
 var spotify = new Spotify(keys.spotify);
 
 //load moment package//
-var moment = require('moment'); 
+var moment = require('moment');
 
 // load the fs package to read and write//
 var fs = require("fs");
@@ -17,9 +17,31 @@ var fs = require("fs");
 // Include the axios npm package run "npm install axios" //
 var axios = require("axios");
 
-// get action and name from command line user input//
+// set action var from command line user input//
 var action = process.argv[2];
-var name = process.argv[3];
+
+// Store all of the arguments in an array from user input
+var nodeArgs = process.argv;
+
+// Create an empty variable for holding the name
+var name = "";
+
+// Loop through all the words in the node argument
+// And do a little for-loop magic to handle the inclusion of "-"s or " "
+
+for (var i = 3; i < nodeArgs.length; i++) {
+
+    if (action === "concert-this" && i > 3 && i < nodeArgs.length) 
+        name = name + " " + nodeArgs[i];
+    else if (action === "movie-this" && i > 3 && i < nodeArgs.length)
+        name = name + "- " + nodeArgs[i];
+    else if (action === "spotify-this-song" && i > 3 && i < nodeArgs.length)
+        name = name + "- " + nodeArgs[i];
+    else 
+       name += nodeArgs[i];
+
+}
+
 
 // The switch-case will direct which function gets run from command line input//
 
@@ -41,9 +63,10 @@ switch (action) {
         break;
 }
 function movie() {
+
     // default name of movie is Mr. Nobody//
-    if (name == null) { name = "Mr. Nobody" }
-    // console.log(name);
+    if (name =="") { name = "Mr. Nobody" }
+    console.log(name);
 
     //loging command run to log.txt file//
     logaction();
@@ -91,6 +114,8 @@ function movie() {
 }
 
 function concert() {
+    
+    console.log(name);
     var link = "https://rest.bandsintown.com/artists/" + name + "/events?app_id=codingbootcamp";
 
     //loging command run to log.txt file//
@@ -138,10 +163,10 @@ function concert() {
 }
 
 function spotifyit() {
-
+    
     // default song name is The Sign from Ace of Base//
 
-    if (name == null) {
+    if (name =="") {
         name = "The Sign"
     }
     console.log(name);
@@ -215,7 +240,7 @@ function logaction() {
 }
 
 function logname() {
-    fs.appendFile("log.txt", name +"\n", function (err) {
+    fs.appendFile("log.txt", name + "\n", function (err) {
 
         // If an error was experienced we will log it.
         if (err) {
