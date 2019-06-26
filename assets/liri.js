@@ -66,7 +66,7 @@ function movie() {
 
     // default name of movie is Mr. Nobody//
     if (name =="") { name = "Mr. Nobody" }
-    console.log(name);
+    // console.log(name);
 
     //loging command run to log.txt file//
     logaction();
@@ -115,7 +115,7 @@ function movie() {
 
 function concert() {
     
-    console.log(name);
+    // console.log(name);
     var link = "https://rest.bandsintown.com/artists/" + name + "/events?app_id=codingbootcamp";
 
     //loging command run to log.txt file//
@@ -133,10 +133,7 @@ function concert() {
                 var locvenue = response.data[i].venue.city;
                 var dateevent = moment(response.data[i].datetime).format('LLL');
                 console.log("Name of venue: " + namevenue + "  Venue location:  " + locvenue + "  Date of event:  " + dateevent)
-                // console.log("Name of venue:" + response.data[i].venue.name);
-                // console.log("Venue location: " + response.data[i].venue.city);
-                // console.log("Date of Event: " + response.data[i].datetime);
-                // console.log("Date of Event: " + moment(response.data[i].datetime).format('LLL'));
+               
             }
         })
 
@@ -169,7 +166,7 @@ function spotifyit() {
     if (name =="") {
         name = "The Sign"
     }
-    console.log(name);
+    // console.log(name);
 
     //loging command run to log.txt file//
     logaction();
